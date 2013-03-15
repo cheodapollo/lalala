@@ -16,12 +16,12 @@ int cont =1;
 int *
 pedir_tiempos_1_svc(int *argp, struct svc_req *rqstp)
 {
-	static int  result;
-
-	result = tiempo;
-	printf("Tiempo es: %d \n",result);
-
-	return &result;
+  static int  result;
+  
+  result = tiempo;
+  printf("Tiempo es: %d \n",result);
+  
+  return &result;
 }
 
 int *
@@ -30,8 +30,6 @@ pedir_gasolina_1_svc(ticket *argp, struct svc_req *rqstp){
 struct ticket aux;
   aux = *argp;
   int r;
-  //printf("Valor de hora: %d",argp.hora);
-  //PREGUNTAR URGENTE
   
   if (tiempo_mon - aux.hora <= 10 && aux.ip_centro != 0 && aux.ip_centro == ip){
       printf("mostrar el ip y el ip del ticket: %d , %d \n",aux.ip_centro,ip);	
@@ -55,11 +53,12 @@ struct ticket aux;
     }
   }  
   else{
-    fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza un ticket invalido:\n\t\t  TicketNo: %d \n",tiempo_mon,aux.numero);
+    fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza un ticket invalido:\n\t\t  TicketNo: %d \n\t Se genera un nuevo reto para autenticar al cliente\n",tiempo_mon,aux.numero);
     printf("genero numero rand \n");
     int randNum;
     srand(time(NULL));
     randNum = rand () % (101) + 0; 
+    fprintf(log_centro,"\tLa entrada del reto es: %d\n",randNum);
     result = randNum;
   }  
   return &result;
@@ -77,7 +76,9 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
   sprintf( mensaje2, "%u", *(argp->respuesta) );
   sprintf( mensaje3, "%u", *d );
   printf("strcmp es %s %s\n",mensaje3,mensaje2);
+  fprintf(log_centro,"\tLa solucion al reto es: %s. La solucion del cliete es: %s\n",mensaje3);
   if(strcmp(mensaje3,mensaje2)==0){
+    fprintf(log_centro,"\tSe acepta la solucion del cliente. El cliente ha superado el reto\n");
     result.numero = cont++;
     result.hora = tiempo_mon;
     char tmp[10];
@@ -87,8 +88,10 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
     ip = atoi(tmp);
     result.ip_centro = ip;
     printf("el ip del ticket: %d \n",result.ip_centro);
-
-  }  
+  }
+  else {
+    fprintf(log_centro,"\tNo se acepta la solucion del cliente.\n");
+  }
 
   return &result;
 }

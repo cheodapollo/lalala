@@ -83,7 +83,7 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
     result.numero = cont++;
     result.hora = tiempo_mon;
     char tmp[10];
-    FILE *f = popen("/sbin/ifconfig wlan0 | grep 'inet:' | cut -d: -f2 | awk '{ print $1}' | cut -d. -f4", "r");
+    FILE *f = popen("/sbin/ifconfig eth0 | grep 'addr:' | cut -d: -f2 | awk '{ print $1}' | cut -d. -f4", "r");
     fgets(tmp, sizeof(tmp), f);
     pclose(f);
     ip = atoi(tmp);

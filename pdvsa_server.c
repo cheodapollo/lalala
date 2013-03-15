@@ -39,7 +39,7 @@ struct ticket aux;
     if(inventario >= 38000){
       inventario -= 38000;
 
-      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
+      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket:\n\t\t | TicketNo: %d || IP: 159.90.10.%d || Tiempo: %d |\n",tiempo_mon,aux.numero,aux.ip_centro,aux.hora);
       fprintf(log_centro,"Evento en el tiempo %d:\n\tEl cliente solicita gasolina y el centro puede responder la peticion\n",tiempo_mon);
       fprintf(log_centro,"\tInventario actual del centro: %d\n",inventario);
 
@@ -47,7 +47,7 @@ struct ticket aux;
     }  
     else{
 
-      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
+      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket: \n\t\t | TicketNo: %d || IP: 159.90.10.%d || Tiempo: %d |\n",tiempo_mon,aux.numero,aux.ip_centro,aux.hora);
       fprintf(log_centro,"Evento en el tiempo %d:\n\tEl cliente solicita gasolina y el centro no puede responder la peticion\n",tiempo_mon);
       fprintf(log_centro,"\tInventario actual del centro: %d\n",inventario);
 
@@ -55,7 +55,7 @@ struct ticket aux;
     }
   }  
   else{
-    fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
+    fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza un ticket invalido:\n\t\t  TicketNo: %d \n",tiempo_mon,aux.numero);
     printf("genero numero rand \n");
     int randNum;
     srand(time(NULL));

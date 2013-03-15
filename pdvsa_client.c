@@ -138,7 +138,6 @@ void leer_entrada(int argc, char** argv){
       fclose(aux);
       dist_n = malloc(sizeof(char*)*centros);
       dist_h = malloc(sizeof(char*)*centros);
-      //dist_p = malloc(sizeof(int*)*centros);
       dist_ti = malloc(sizeof(int*)*centros);
       dist_o = malloc(sizeof(int*)*centros);
 
@@ -149,7 +148,7 @@ void leer_entrada(int argc, char** argv){
 
       char nombre[20];
       char host[20];
-      //int num; 
+
 
       for(i = 0; i < centros; i++){ 
 	fscanf(entrada,"%[^'&']&%s\n",nombre,host);
@@ -157,7 +156,6 @@ void leer_entrada(int argc, char** argv){
 	strcpy(dist_n[i],nombre);
 	dist_h[i] = malloc(sizeof(char*)*strlen(host));
 	strcpy(dist_h[i],host);
-	//dist_p[i] = num;
       }
       fclose(entrada);
     }
@@ -173,7 +171,6 @@ void liberar_mem(){
   }
   free(dist_n);
   free(dist_h);
-  //free(dist_p);
 }
 
 
@@ -246,19 +243,15 @@ void pedir_tiempos(){
       clnt_pcreateerror (dist_h[i]);
       exit (1);
     }
-#endif	/* DEBUG */
+#endif	
     result_1 = pedir_tiempos_1(&pedir_tiempos_1_arg, clnt);
     if (result_1 == (int *) NULL) {
       clnt_perror (clnt, "call failed");
     }
-    else{
-      //printf("TIEMPO ES: %d \n",*result_1);
-    }
     dist_ti[i] = *result_1;
-    //printf("El tiempo del arreglo: %d \n",dist_ti[i]);
 #ifndef	DEBUG
     clnt_destroy (clnt);
-#endif	 /* DEBUG */
+#endif	 
   }
 }
 
@@ -276,13 +269,12 @@ void pedir_gasolina(){
       clnt_pcreateerror (dist_h[i]);
       exit (1);
     }
-#endif	/* DEBUG */
+#endif 
     result_1 = pedir_gasolina_1(&pase, clnt);
     if (result_1 == (int *) NULL) {
       clnt_perror (clnt, "call failed");
     }
     else{
-      //printf("La respuesta es: %d \n",*result_1);
     }
     /* Si el centro me puede atender */  
     if (*result_1 == (-1)){
@@ -305,11 +297,6 @@ void pedir_gasolina(){
       reto_aux.respuesta = d;
       reto_aux.reto = *result_1;
       ticket_aux = validar_respuesta_1(&reto_aux, clnt);
-      pase.hora = ticket_aux->hora;
-      pase.numero = ticket_aux->numero;
-      //pase.ip_bomba = malloc((char*)*strlen(ticket_aux->ip_centro));
-      
-      //printf("el ip del ticket generado es: %s \n", ticket_aux->ip_centro);
       pase = *ticket_aux;
       pedir_gasolina();
     }  
@@ -338,39 +325,41 @@ main (int argc, char *argv[])
   fprintf(log_bomba,"* Consumo de la bomba: %d\n",consumo); 
   int i;
   pase.ip_centro = 0;
-
   for(i = 0; i < centros; i++){
     printf("Nombre Centro : %s\n",dist_n[i]);
     printf("Host  Centro : %s\n",dist_h[i]);
-    //dist_p[i] = num;
   }
+
   while(tiempo <= 480){	  
     int unsleep;
-    /* Pido los tiempos de los centros cada ves que pasa un minuto */
+    /* Se piden los tiempos de los centros cada ves que pasa un minuto */
     pedir_tiempos();
     ordenar_centros(0,centros);
-    /* Hago dormir a la bomba */
     usleep (100000);
+
     /* Caso de que el consumo es mayor al inventario actual */
     if( inventario - consumo  <= 0){
       inventario = 0;
-      fprintf(log_bomba,"\n El tanque de la bomba se encuentra vacio en el tiempo: %d\n",tiempo);
+      fprintf(log_bomba,"Evento en el tiempo %d:\n\tEl tanque de la bomba se encuentra vacio\n",tiempo);
     }  
+
     /* Caso en el que el inventario es mayor al consumo */
     if( inventario >= consumo)
       inventario = inventario - consumo;
+
     /* Caso de que pueda pedir una gandola la bomba */
     if ( capacidad - inventario >= 38000  ){
       int invactual = inventario;
       pedir_gasolina();
-      fprintf(log_bomba,"%s","\n Bomba pide gasolina \n");
-      fprintf(log_bomba,"El ticket actual es el numero: %d \n",pase.numero);
+      fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba pide gasolina utilizando el ticket:\n\t\t | TicketNo. %d | IP: 159.90.9.%d | Tiempo: %d |\n",tiempo,pase.numero,pase.ip_centro,pase.hora);
+
       if( invactual == inventario)
-        fprintf(log_bomba,"No puede ser atendida la bomba \n");
-      fprintf(log_bomba,"* Inventario actual de la bomba: %d\n",inventario);
+        fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba no puede ser atendida\n",tiempo);
+      fprintf(log_bomba,"\tInventario actual de la bomba: %d\n",inventario);
     }
-    fprintf(log_bomba,"%d %s",tiempo,"min \n");
-    fprintf(log_bomba,"* Inventario actual de la bomba: %d\n",inventario);
+
+    //    fprintf(log_bomba,"%d %s",tiempo,"min \n");
+    // fprintf(log_bomba,"* Inventario actual de la bomba: %d\n",inventario);
     printf("EL inventario es: %d \n",inventario);
     printf("El tiempo es: %d \n",tiempo);
     tiempo++;

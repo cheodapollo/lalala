@@ -37,27 +37,25 @@ struct ticket aux;
       printf("mostrar el ip y el ip del ticket: %d , %d \n",aux.ip_centro,ip);	
     printf("mostrar el tiempo actual y el tiempo del ticket: %d , %d \n",tiempo_mon,aux.hora);
     if(inventario >= 38000){
-      //pthread_mutex_lock( &inventario );
       inventario -= 38000;
-      //pthread_mutex_unlock( &inventario );
-      //pthread_mutex_lock( &mutex_log );
-      fprintf(log_centro,"Acepto el ticket numero: %d \n",aux.numero);
+
+      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
       fprintf(log_centro,"Evento en el tiempo %d:\n\tEl cliente solicita gasolina y el centro puede responder la peticion\n",tiempo_mon);
       fprintf(log_centro,"\tInventario actual del centro: %d\n",inventario);
-      //pthread_mutex_unlock( &mutex_log );
+
       result = -1;
     }  
     else{
-      //pthread_mutex_lock( &mutex_log );
-      fprintf(log_centro,"Acepto el ticket numero: %d \n",aux.numero);
+
+      fprintf(log_centro,"Evento en el tiempo %d:\n\t Se acepta el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
       fprintf(log_centro,"Evento en el tiempo %d:\n\tEl cliente solicita gasolina y el centro no puede responder la peticion\n",tiempo_mon);
       fprintf(log_centro,"\tInventario actual del centro: %d\n",inventario);
-      //pthread_mutex_unlock( &mutex_log );
+
       result = -2;    
     }
   }  
   else{
-    fprintf(log_centro,"Rechazo el ticket numero: %d \n",aux.numero);
+    fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza el ticket: TicketNo: %d && IP: 159.90.10.%d && Tiempo: %d \n",aux.numero,aux.ip_centro,aux.hora);
     printf("genero numero rand \n");
     int randNum;
     srand(time(NULL));
@@ -83,7 +81,7 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
     result.numero = cont++;
     result.hora = tiempo_mon;
     char tmp[10];
-    FILE *f = popen("/sbin/ifconfig wlan0 | grep 'inet:' | cut -d: -f2 | awk '{ print $1}' | cut -d. -f4", "r");
+    FILE *f = popen("/sbin/ifconfig eth0 | grep 'addr:' | cut -d: -f2 | awk '{ print $1}' | cut -d. -f4", "r");
     fgets(tmp, sizeof(tmp), f);
     pclose(f);
     ip = atoi(tmp);

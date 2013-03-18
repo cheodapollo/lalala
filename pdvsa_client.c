@@ -358,5 +358,6 @@ main (int argc, char *argv[])
 
     tiempo++;
   }
+  printf("Se ha termiando la simulacion de la bomba\n");
 
 }

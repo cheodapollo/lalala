@@ -150,8 +150,6 @@ void * monitor_tiempo(void *param){
 
     usleep (100000);
     ++tiempo_mon;
-    printf("tiempo es: %d \n",tiempo_mon);
-    printf("El inventario es : %d \n",inventario);
   }
   printf("Se ha termiando la simulacion del centro\n");
   exit(0);
@@ -167,22 +165,19 @@ main (int argc, char **argv)
 	strcat(documento, nombre);
 	strcat(documento, ".txt");
 	log_centro = fopen(documento,"w+");
-	printf("--------------INICIO DE SIMULACION-------------\n" ); 
-	printf("* Nombre del centro: %s\n",nombre);
-	printf("* Capacidad maxima del centro: %d\n",capacidad);
-	printf("* Inventario del centro: %d\n",inventario);
-	printf("* Tiempo del centro: %d\n",tiempo);
-	printf("* Suministro del centro: %d\n",suministro);
+	fprintf(log_centro,"--------------INICIO DE SIMULACION-------------\n" );
+	fprintf(log_centro,"* Nombre del centro: %s\n",nombre);
+	fprintf(log_centro,"* Capacidad maxima del centro: %d\n",capacidad);
+	fprintf(log_centro,"* Inventario del centro: %d\n",inventario);
+	fprintf(log_centro,"* Tiempo del centro: %d\n",tiempo);
+	fprintf(log_centro,"* Suministro del centro: %d\n",suministro);
 
 	pthread_t monitor;
 
-	//FILE *f = popen("/sbin/ifconfig wlan0 | grep 'inet:' | cut -d: -f2 | awk '{ print $1}'", "r");
-	//fgets(ip, sizeof(ip), f);
-	//pclose(f);
 	int arg[1];
 	if ((pthread_create(&monitor, NULL, &monitor_tiempo, (void *) arg)) != 0) 
 		perror("Error!, fallo creacion del hilo monitor del tiempo de simulacion.\n");
-	//aceptar_conexiones();
+
 
 	pmap_unset (PDVSA_PROG, PDVSA_VERS);
 

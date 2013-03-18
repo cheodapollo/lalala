@@ -52,7 +52,7 @@ pedir_gasolina_1_svc(ticket *argp, struct svc_req *rqstp){
     fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza un ticket invalido:\n\t\t  TicketNo: %d \n\t Se genera un nuevo reto para autenticar al cliente\n",tiempo_mon,aux.numero);
     int randNum;
     srand(time(NULL));
-    randNum = rand () % (101) + 0; 
+    randNum = rand () % (101) + 1; 
     fprintf(log_centro,"\tLa entrada del reto es: %d\n",randNum);
     result = randNum;
   }  

@@ -30,56 +30,56 @@
 static void
 pdvsa_prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
-	union {
-		int pedir_tiempos_1_arg;
-		ticket pedir_gasolina_1_arg;
-		reto validar_respuesta_1_arg;
-	} argument;
-	char *result;
-	xdrproc_t _xdr_argument, _xdr_result;
-	char *(*local)(char *, struct svc_req *);
+  union {
+    int pedir_tiempos_1_arg;
+    ticket pedir_gasolina_1_arg;
+    reto validar_respuesta_1_arg;
+  } argument;
+  char *result;
+  xdrproc_t _xdr_argument, _xdr_result;
+  char *(*local)(char *, struct svc_req *);
 
-	switch (rqstp->rq_proc) {
-	case NULLPROC:
-		(void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
-		return;
+  switch (rqstp->rq_proc) {
+  case NULLPROC:
+    (void) svc_sendreply (transp, (xdrproc_t) xdr_void, (char *)NULL);
+    return;
 
-	case PEDIR_TIEMPOS:
-		_xdr_argument = (xdrproc_t) xdr_int;
-		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) pedir_tiempos_1_svc;
-		break;
+  case PEDIR_TIEMPOS:
+    _xdr_argument = (xdrproc_t) xdr_int;
+    _xdr_result = (xdrproc_t) xdr_int;
+    local = (char *(*)(char *, struct svc_req *)) pedir_tiempos_1_svc;
+    break;
 
-	case PEDIR_GASOLINA:
-		_xdr_argument = (xdrproc_t) xdr_ticket;
-		_xdr_result = (xdrproc_t) xdr_int;
-		local = (char *(*)(char *, struct svc_req *)) pedir_gasolina_1_svc;
-		break;
+  case PEDIR_GASOLINA:
+    _xdr_argument = (xdrproc_t) xdr_ticket;
+    _xdr_result = (xdrproc_t) xdr_int;
+    local = (char *(*)(char *, struct svc_req *)) pedir_gasolina_1_svc;
+    break;
 
-	case VALIDAR_RESPUESTA:
-		_xdr_argument = (xdrproc_t) xdr_reto;
-		_xdr_result = (xdrproc_t) xdr_ticket;
-		local = (char *(*)(char *, struct svc_req *)) validar_respuesta_1_svc;
-		break;
+  case VALIDAR_RESPUESTA:
+    _xdr_argument = (xdrproc_t) xdr_reto;
+    _xdr_result = (xdrproc_t) xdr_ticket;
+    local = (char *(*)(char *, struct svc_req *)) validar_respuesta_1_svc;
+    break;
 
-	default:
-		svcerr_noproc (transp);
-		return;
-	}
-	memset ((char *)&argument, 0, sizeof (argument));
-	if (!svc_getargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
-		svcerr_decode (transp);
-		return;
-	}
-	result = (*local)((char *)&argument, rqstp);
-	if (result != NULL && !svc_sendreply(transp, (xdrproc_t) _xdr_result, result)) {
-		svcerr_systemerr (transp);
-	}
-	if (!svc_freeargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
-		fprintf (stderr, "%s", "unable to free arguments");
-		exit (1);
-	}
-	return;
+  default:
+    svcerr_noproc (transp);
+    return;
+  }
+  memset ((char *)&argument, 0, sizeof (argument));
+  if (!svc_getargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+    svcerr_decode (transp);
+    return;
+  }
+  result = (*local)((char *)&argument, rqstp);
+  if (result != NULL && !svc_sendreply(transp, (xdrproc_t) _xdr_result, result)) {
+    svcerr_systemerr (transp);
+  }
+  if (!svc_freeargs (transp, (xdrproc_t) _xdr_argument, (caddr_t) &argument)) {
+    fprintf (stderr, "%s", "unable to free arguments");
+    exit (1);
+  }
+  return;
 }
 
 
@@ -158,51 +158,51 @@ void * monitor_tiempo(void *param){
 int
 main (int argc, char **argv)
 {
-	register SVCXPRT *transp;
-	leer_entrada(argc, argv);
-	char documento [50];
-	strcpy(documento, "log_");
-	strcat(documento, nombre);
-	strcat(documento, ".txt");
-	log_centro = fopen(documento,"w+");
-	fprintf(log_centro,"--------------INICIO DE SIMULACION-------------\n" );
-	fprintf(log_centro,"* Nombre del centro: %s\n",nombre);
-	fprintf(log_centro,"* Capacidad maxima del centro: %d\n",capacidad);
-	fprintf(log_centro,"* Inventario del centro: %d\n",inventario);
-	fprintf(log_centro,"* Tiempo del centro: %d\n",tiempo);
-	fprintf(log_centro,"* Suministro del centro: %d\n",suministro);
+  register SVCXPRT *transp;
+  leer_entrada(argc, argv);
+  char documento [50];
+  strcpy(documento, "log_");
+  strcat(documento, nombre);
+  strcat(documento, ".txt");
+  log_centro = fopen(documento,"w+");
+  fprintf(log_centro,"--------------INICIO DE SIMULACION-------------\n" );
+  fprintf(log_centro,"* Nombre del centro: %s\n",nombre);
+  fprintf(log_centro,"* Capacidad maxima del centro: %d\n",capacidad);
+  fprintf(log_centro,"* Inventario del centro: %d\n",inventario);
+  fprintf(log_centro,"* Tiempo del centro: %d\n",tiempo);
+  fprintf(log_centro,"* Suministro del centro: %d\n",suministro);
 
-	pthread_t monitor;
+  pthread_t monitor;
 
-	int arg[1];
-	if ((pthread_create(&monitor, NULL, &monitor_tiempo, (void *) arg)) != 0) 
-		perror("Error!, fallo creacion del hilo monitor del tiempo de simulacion.\n");
+  int arg[1];
+  if ((pthread_create(&monitor, NULL, &monitor_tiempo, (void *) arg)) != 0) 
+    perror("Error!, fallo creacion del hilo monitor del tiempo de simulacion.\n");
 
 
-	pmap_unset (PDVSA_PROG, PDVSA_VERS);
+  pmap_unset (PDVSA_PROG, PDVSA_VERS);
 
-	transp = svcudp_create(RPC_ANYSOCK);
-	if (transp == NULL) {
-		fprintf (stderr, "%s", "cannot create udp service.");
-		exit(1);
-	}
-	if (!svc_register(transp, PDVSA_PROG, PDVSA_VERS, pdvsa_prog_1, IPPROTO_UDP)) {
-		fprintf (stderr, "%s", "unable to register (PDVSA_PROG, PDVSA_VERS, udp).");
-		exit(1);
-	}
+  transp = svcudp_create(RPC_ANYSOCK);
+  if (transp == NULL) {
+    fprintf (stderr, "%s", "cannot create udp service.");
+    exit(1);
+  }
+  if (!svc_register(transp, PDVSA_PROG, PDVSA_VERS, pdvsa_prog_1, IPPROTO_UDP)) {
+    fprintf (stderr, "%s", "unable to register (PDVSA_PROG, PDVSA_VERS, udp).");
+    exit(1);
+  }
 
-	transp = svctcp_create(RPC_ANYSOCK, 0, 0);
-	if (transp == NULL) {
-		fprintf (stderr, "%s", "cannot create tcp service.");
-		exit(1);
-	}
-	if (!svc_register(transp, PDVSA_PROG, PDVSA_VERS, pdvsa_prog_1, IPPROTO_TCP)) {
-		fprintf (stderr, "%s", "unable to register (PDVSA_PROG, PDVSA_VERS, tcp).");
-		exit(1);
-	}
+  transp = svctcp_create(RPC_ANYSOCK, 0, 0);
+  if (transp == NULL) {
+    fprintf (stderr, "%s", "cannot create tcp service.");
+    exit(1);
+  }
+  if (!svc_register(transp, PDVSA_PROG, PDVSA_VERS, pdvsa_prog_1, IPPROTO_TCP)) {
+    fprintf (stderr, "%s", "unable to register (PDVSA_PROG, PDVSA_VERS, tcp).");
+    exit(1);
+  }
 
-	svc_run ();
-	fprintf (stderr, "%s", "svc_run returned");
-	exit (1);
-	/* NOTREACHED */
+  svc_run ();
+  fprintf (stderr, "%s", "svc_run returned");
+  exit (1);
+  /* NOTREACHED */
 }

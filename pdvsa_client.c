@@ -286,6 +286,7 @@ void pedir_gasolina(){
 	else{ 
 	  inventario = inventario - (consumo * dist_ti[dist_o[i]] ); // 
 	  inventario = inventario + 38000;
+	  
 	}
 	tiempo = tiempo + dist_ti[dist_o[i]] ;
       }    
@@ -353,6 +354,11 @@ main (int argc, char *argv[])
       if( invactual == inventario){
         fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba no puede ser atendida\n",tiempo);
 	fprintf(log_bomba,"\tInventario actual de la bomba: %d\n",inventario);
+      }
+      else {
+	fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba recibio gasolina\n",tiempo);
+	fprintf(log_bomba,"\tInventario actual de la bomba: %d\n",inventario);
+	
       }
     }
 

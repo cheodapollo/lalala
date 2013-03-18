@@ -36,36 +36,36 @@ int* dist_o;
 void
 pdvsa_prog_1(char *host)
 {
-	CLIENT *clnt;
-	int  *result_1;
-	int  pedir_tiempos_1_arg;
-	int  *result_2;
-	ticket  pedir_gasolina_1_arg;
-	ticket  *result_3;
-	reto  validar_respuesta_1_arg;
+  CLIENT *clnt;
+  int  *result_1;
+  int  pedir_tiempos_1_arg;
+  int  *result_2;
+  ticket  pedir_gasolina_1_arg;
+  ticket  *result_3;
+  reto  validar_respuesta_1_arg;
 
 #ifndef	DEBUG
-	clnt = clnt_create (host, PDVSA_PROG, PDVSA_VERS, "udp");
-	if (clnt == NULL) {
-		clnt_pcreateerror (host);
-		exit (1);
-	}
+  clnt = clnt_create (host, PDVSA_PROG, PDVSA_VERS, "udp");
+  if (clnt == NULL) {
+    clnt_pcreateerror (host);
+    exit (1);
+  }
 #endif	/* DEBUG */
 
-	result_1 = pedir_tiempos_1(&pedir_tiempos_1_arg, clnt);
-	if (result_1 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_2 = pedir_gasolina_1(&pedir_gasolina_1_arg, clnt);
-	if (result_2 == (int *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-	result_3 = validar_respuesta_1(&validar_respuesta_1_arg, clnt);
-	if (result_3 == (ticket *) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
+  result_1 = pedir_tiempos_1(&pedir_tiempos_1_arg, clnt);
+  if (result_1 == (int *) NULL) {
+    clnt_perror (clnt, "call failed");
+  }
+  result_2 = pedir_gasolina_1(&pedir_gasolina_1_arg, clnt);
+  if (result_2 == (int *) NULL) {
+    clnt_perror (clnt, "call failed");
+  }
+  result_3 = validar_respuesta_1(&validar_respuesta_1_arg, clnt);
+  if (result_3 == (ticket *) NULL) {
+    clnt_perror (clnt, "call failed");
+  }
 #ifndef	DEBUG
-	clnt_destroy (clnt);
+  clnt_destroy (clnt);
 #endif	 /* DEBUG */
 }
 
@@ -353,9 +353,10 @@ main (int argc, char *argv[])
       pedir_gasolina();
       fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba pide gasolina utilizando el ticket:\n\t\t | TicketNo. %d | IP: 159.90.9.%d | Tiempo: %d |\n",tiempo,pase.numero,pase.ip_centro,pase.hora);
 
-      if( invactual == inventario)
+      if( invactual == inventario){
         fprintf(log_bomba,"Evento en el tiempo %d:\n\tLa bomba no puede ser atendida\n",tiempo);
-      fprintf(log_bomba,"\tInventario actual de la bomba: %d\n",inventario);
+	fprintf(log_bomba,"\tInventario actual de la bomba: %d\n",inventario);
+      }
     }
 
     //    fprintf(log_bomba,"%d %s",tiempo,"min \n");

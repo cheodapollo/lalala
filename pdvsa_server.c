@@ -26,13 +26,13 @@ pedir_tiempos_1_svc(int *argp, struct svc_req *rqstp)
 
 int *
 pedir_gasolina_1_svc(ticket *argp, struct svc_req *rqstp){
-	static int  result;
-struct ticket aux;
+  static int  result;
+  struct ticket aux;
   aux = *argp;
   int r;
   
   if (tiempo_mon - aux.hora <= 10 && aux.ip_centro != 0 && aux.ip_centro == ip){
-      printf("mostrar el ip y el ip del ticket: %d , %d \n",aux.ip_centro,ip);	
+    printf("mostrar el ip y el ip del ticket: %d , %d \n",aux.ip_centro,ip);	
     printf("mostrar el tiempo actual y el tiempo del ticket: %d , %d \n",tiempo_mon,aux.hora);
     if(inventario >= 38000){
       inventario -= 38000;

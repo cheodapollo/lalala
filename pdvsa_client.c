@@ -326,10 +326,6 @@ main (int argc, char *argv[])
   fprintf(log_bomba,"* Consumo de la bomba: %d\n",consumo); 
   int i;
   pase.ip_centro = 0;
-  for(i = 0; i < centros; i++){
-    printf("Nombre Centro : %s\n",dist_n[i]);
-    printf("Host  Centro : %s\n",dist_h[i]);
-  }
 
   while(tiempo <= 480){	  
     int unsleep;
@@ -360,10 +356,6 @@ main (int argc, char *argv[])
       }
     }
 
-    //    fprintf(log_bomba,"%d %s",tiempo,"min \n");
-    // fprintf(log_bomba,"* Inventario actual de la bomba: %d\n",inventario);
-    printf("EL inventario es: %d \n",inventario);
-    printf("El tiempo es: %d \n",tiempo);
     tiempo++;
   }
 

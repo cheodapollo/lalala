@@ -9,7 +9,6 @@
 #include "md5.h"
 
 
-
 int cont =1;
 
 int *
@@ -18,7 +17,7 @@ pedir_tiempos_1_svc(int *argp, struct svc_req *rqstp)
   static int  result;
   
   result = tiempo;
-  printf("Tiempo es: %d \n",result);
+ 
   
   return &result;
 }
@@ -31,8 +30,6 @@ pedir_gasolina_1_svc(ticket *argp, struct svc_req *rqstp){
   int r;
   
   if (tiempo_mon - aux.hora <= 10 && aux.ip_centro != 0 && aux.ip_centro == ip){
-    printf("mostrar el ip y el ip del ticket: %d , %d \n",aux.ip_centro,ip);	
-    printf("mostrar el tiempo actual y el tiempo del ticket: %d , %d \n",tiempo_mon,aux.hora);
     if(inventario >= 38000){
       inventario -= 38000;
 
@@ -53,7 +50,6 @@ pedir_gasolina_1_svc(ticket *argp, struct svc_req *rqstp){
   }  
   else{
     fprintf(log_centro,"Evento en el tiempo %d:\n\t Se rechaza un ticket invalido:\n\t\t  TicketNo: %d \n\t Se genera un nuevo reto para autenticar al cliente\n",tiempo_mon,aux.numero);
-    printf("genero numero rand \n");
     int randNum;
     srand(time(NULL));
     randNum = rand () % (101) + 0; 
@@ -74,7 +70,6 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
   unsigned *d = md5(mensaje, strlen(mensaje));
   sprintf( mensaje2, "%u", *(argp->respuesta) );
   sprintf( mensaje3, "%u", *d );
-  printf("strcmp es %s %s\n",mensaje3,mensaje2);
   fprintf(log_centro,"\tLa solucion al reto es: %s. La solucion del cliete es: %s\n",mensaje3,mensaje2);
   if(strcmp(mensaje3,mensaje2)==0){
     fprintf(log_centro,"\tSe acepta la solucion del cliente. El cliente ha superado el reto\n");
@@ -86,7 +81,6 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
     pclose(f);
     ip = atoi(tmp);
     result.ip_centro = ip;
-    printf("el ip del ticket: %d \n",result.ip_centro);
     fprintf(log_centro,"\tSe emite el ticket: \n\t\t | TicketNo: %d || IP: 159.90.10.%d || Tiempo: %d |\n",result.numero,result.ip_centro,result.hora);
   }
   else {

@@ -15,7 +15,7 @@
 #include <sys/time.h>
 #include "pdvsa.h"
 #include "md5.h"
-
+#include <limits.h>
 /*Archivo para escribir el log de la bomba*/
 FILE* log_bomba;
 
@@ -233,7 +233,7 @@ void pedir_tiempos(){
 
   CLIENT *clnt;
   int  *result_1 = NULL;
-  int *pedir_tiempos_1_arg = NULL;
+  int pedir_tiempos_1_arg;
   
   int i;
   for(i=0; i < centros; i++){
@@ -246,7 +246,8 @@ void pedir_tiempos(){
 #endif	
     result_1 = pedir_tiempos_1(&pedir_tiempos_1_arg, clnt);
     if (result_1 == (int *) NULL) {
-      clnt_perror (clnt, "call failed");
+      dist_ti[i] = INT_MAX;
+      continue;
     }
     dist_ti[i] = *result_1;
 #ifndef	DEBUG
@@ -272,7 +273,7 @@ void pedir_gasolina(){
 #endif 
     result_1 = pedir_gasolina_1(&pase, clnt);
     if (result_1 == (int *) NULL) {
-      clnt_perror (clnt, "call failed");
+      continue;
     }
     else{
     }

@@ -76,7 +76,7 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
   sprintf( mensaje2, "%u", *(argp->respuesta) );
   sprintf( mensaje3, "%u", *d );
   printf("strcmp es %s %s\n",mensaje3,mensaje2);
-  //fprintf(log_centro,"\tLa solucion al reto es: %s. La solucion del cliete es: %s\n",mensaje2);
+  fprintf(log_centro,"\tLa solucion al reto es: %s. La solucion del cliete es: %s\n",mensaje3,mensaje2);
   if(strcmp(mensaje3,mensaje2)==0){
     fprintf(log_centro,"\tSe acepta la solucion del cliente. El cliente ha superado el reto\n");
     result.numero = cont++;

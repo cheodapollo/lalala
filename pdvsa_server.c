@@ -10,7 +10,6 @@
 
 
 
-
 int cont =1;
 
 int *
@@ -88,6 +87,7 @@ validar_respuesta_1_svc(reto *argp, struct svc_req *rqstp)
     ip = atoi(tmp);
     result.ip_centro = ip;
     printf("el ip del ticket: %d \n",result.ip_centro);
+    fprintf(log_centro,"\tSe emite el ticket: \n\t\t | TicketNo: %d || IP: 159.90.10.%d || Tiempo: %d |\n",result.numero,result.ip_centro,result.hora);
   }
   else {
     fprintf(log_centro,"\tNo se acepta la solucion del cliente.\n");

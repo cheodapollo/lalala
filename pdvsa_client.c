@@ -272,6 +272,9 @@ void pedir_gasolina(){
     }
 #endif 
     result_1 = pedir_gasolina_1(&pase, clnt);
+    if (*result_1 == (-1))
+      --i;
+
     if (result_1 == (int *) NULL) {
       continue;
     }
@@ -289,9 +292,15 @@ void pedir_gasolina(){
 	  
 	}
 	tiempo = tiempo + dist_ti[dist_o[i]] ;
-      }    
-    } 
-    if (*result_1 > 0){
+	printf("pidiendo i: %d\n",i);
+      }
+      break;
+    }
+ 
+    else if (*result_1 > 0){
+      printf("result: %d\t ",*result_1);
+      printf("validando i: %d\n",i);
+     
       struct reto reto_aux;
       char mensaje[80];
       sprintf( mensaje, "%d", *result_1 );
@@ -300,7 +309,7 @@ void pedir_gasolina(){
       reto_aux.reto = *result_1;
       ticket_aux = validar_respuesta_1(&reto_aux, clnt);
       pase = *ticket_aux;
-      pedir_gasolina();
+
     }  
 	  
   }
@@ -328,7 +337,8 @@ main (int argc, char *argv[])
   int i;
   pase.ip_centro = 0;
 
-  while(tiempo <= 480){	  
+  while(tiempo <= 100){	  
+    printf("tiempo: %d\n",tiempo);
     int unsleep;
     /* Se piden los tiempos de los centros cada ves que pasa un minuto */
     pedir_tiempos();

@@ -134,7 +134,7 @@ void leer_entrada(int argc, char** argv){
 void * monitor_tiempo(void *param){
   tiempo_mon = 0;
   int unsleep;
-  while (tiempo_mon <= 600) {
+  while (tiempo_mon <= 1000) {
     if ((inventario + suministro) < capacidad){
       //pthread_mutex_lock( &mutex_inventario );
       inventario += suministro;  

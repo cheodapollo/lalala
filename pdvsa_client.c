@@ -337,7 +337,7 @@ main (int argc, char *argv[])
   int i;
   pase.ip_centro = 0;
 
-  while(tiempo <= 100){	  
+  while(tiempo <= 480){	  
     printf("tiempo: %d\n",tiempo);
     int unsleep;
     /* Se piden los tiempos de los centros cada ves que pasa un minuto */
